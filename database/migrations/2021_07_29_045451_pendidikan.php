@@ -20,7 +20,7 @@ class Pendidikan extends Migration
             $table->integer('tahun_masuk');
             $table->integer('tahun_lulus');
             $table->unsignedBigInteger('nomor_ktp');
-            $table->foreign('nomor_ktp')->references('nomor_ktp')->on('karyawans');
+            $table->foreign('nomor_ktp')->references('nomor_ktp')->on('karyawans')->onDelete('cascade');
         });
     }
 

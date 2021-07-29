@@ -42,6 +42,7 @@ class KaryawanController extends Controller
         $karyawan->nomor_ktp = $request->nomor_ktp;
 
         $karyawan->save();
+        $karyawan->nomor_ktp = $request->nomor_ktp;
         return response(json_encode($karyawan), 201)->header('Content-Type', 'application/json');
     }
 

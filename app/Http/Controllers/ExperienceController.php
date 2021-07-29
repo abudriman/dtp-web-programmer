@@ -36,15 +36,17 @@ class ExperienceController extends Controller
      */
     public function store(Request $request)
     {
-        $experience = new Experience;
+        foreach ($request->experience as $value) {
+            $experience = new Experience;
 
-        $experience->perusahaan = $request->perusahaan;
-        $experience->jabatan = $request->jabatan;
-        $experience->tahun = $request->tahun;
-        $experience->keterangan = $request->keterangan;
-        $experience->nomor_ktp = $request->nomor_ktp;
+            $experience->perusahaan = $value["perusahaan"];
+            $experience->jabatan = $value["jabatan"];
+            $experience->tahun = $value["tahun"];
+            $experience->keterangan = $value["keterangan"];
+            $experience->nomor_ktp = $value["nomor_ktp"];
 
-        $experience->save();
+            $experience->save();
+        }
         return response(json_encode($experience), 201)->header('Content-Type', 'application/json');
     }
 
@@ -77,17 +79,32 @@ class ExperienceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $experience = Experience::find($id);
-        
-        if($request->perusahaan) $experience->perusahaan = $request->perusahaan;
-        if($request->jabatan) $experience->jabatan = $request->jabatan;
-        if($request->tahun) $experience->tahun = $request->tahun;
-        if($request->keterangan) $experience->keterangan = $request->keterangan;
-        if($request->nomor_ktp) $experience->nomor_ktp = $request->nomor_ktp;
+        foreach ($request->experience as $value) {
+            if($value["id"]==0){
+                $experience = new Experience;
 
-        $experience->save();
+                $experience->perusahaan = $value["perusahaan"];
+                $experience->jabatan = $value["jabatan"];
+                $experience->tahun = $value["tahun"];
+                $experience->keterangan = $value["keterangan"];
+                $experience->nomor_ktp = $value["nomor_ktp"];
+
+                $experience->save();
+                continue;
+
+            }
+            $experience = Experience::find($value["id"]);
+            
+            if($value['perusahaan']) $experience->perusahaan = $value['perusahaan'];
+            if($value['jabatan']) $experience->jabatan = $value['jabatan'];
+            if($value['tahun']) $experience->tahun = $value['tahun'];
+            if($value['keterangan']) $experience->keterangan = $value['keterangan'];
+            if($value['nomor_ktp']) $experience->nomor_ktp = $value['nomor_ktp'];
+
+            $experience->save();
+        }
         return response(json_encode($experience), 200)->header('Content-Type', 'application/json');
     }
 

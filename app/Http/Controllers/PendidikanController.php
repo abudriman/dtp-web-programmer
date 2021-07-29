@@ -36,15 +36,18 @@ class PendidikanController extends Controller
      */
     public function store(Request $request)
     {
-        $pendidikan = new Pendidikan;
+        foreach ($request->pendidikan as $value) {
+            $pendidikan = new Pendidikan;
 
-        $pendidikan->nama_sekolah = $request->nama_sekolah;
-        $pendidikan->jurusan = $request->jurusan;
-        $pendidikan->tahun_masuk = $request->tahun_masuk;
-        $pendidikan->tahun_lulus = $request->tahun_lulus;
-        $pendidikan->nomor_ktp = $request->nomor_ktp;
+            $pendidikan->nama_sekolah = $value["nama_sekolah"];
+            $pendidikan->jurusan = $value["jurusan"];
+            $pendidikan->tahun_masuk = $value["tahun_masuk"];
+            $pendidikan->tahun_lulus = $value["tahun_lulus"];
+            $pendidikan->nomor_ktp = $value["nomor_ktp"];
 
-        $pendidikan->save();
+            $pendidikan->save();
+        }
+        
         return response(json_encode($pendidikan), 201)->header('Content-Type', 'application/json');
     }
 
@@ -77,17 +80,31 @@ class PendidikanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $pendidikan = Pendidikan::find($id);
-        
-        if($request->nama_sekolah) $pendidikan->nama_sekolah = $request->nama_sekolah;
-        if($request->jurusan) $pendidikan->jurusan = $request->jurusan;
-        if($request->tahun_masuk) $pendidikan->tahun_masuk = $request->tahun_masuk;
-        if($request->tahun_lulus) $pendidikan->tahun_lulus = $request->tahun_lulus;
-        if($request->nomor_ktp) $pendidikan->nomor_ktp = $request->nomor_ktp;
+        foreach ($request->pendidikan as $value) {
+            if($value["id"]==0){
+                $pendidikan = new Pendidikan;
 
-        $pendidikan->save();
+                $pendidikan->nama_sekolah = $value["nama_sekolah"];
+                $pendidikan->jurusan = $value["jurusan"];
+                $pendidikan->tahun_masuk = $value["tahun_masuk"];
+                $pendidikan->tahun_lulus = $value["tahun_lulus"];
+                $pendidikan->nomor_ktp = $value["nomor_ktp"];
+
+                $pendidikan->save();
+                continue;
+            }
+            $pendidikan = Pendidikan::find($value["id"]);
+        
+            if($value["nama_sekolah"]) $pendidikan->nama_sekolah = $value["nama_sekolah"];
+            if($value["jurusan"]) $pendidikan->jurusan = $value["jurusan"];
+            if($value["tahun_masuk"]) $pendidikan->tahun_masuk = $value["tahun_masuk"];
+            if($value["tahun_lulus"]) $pendidikan->tahun_lulus = $value["tahun_lulus"];
+            if($value["nomor_ktp"]) $pendidikan->nomor_ktp = $value["nomor_ktp"];
+
+            $pendidikan->save();
+        }
         return response(json_encode($pendidikan), 200)->header('Content-Type', 'application/json');
     }
 
