@@ -17,18 +17,31 @@
 ## Setup
 
 update composer 
+
     composer update
+
 install composer package
+
     composer install
+
 install npm package
+
     npm install
+
 compile assets
+
     npm run dev
+
 generate key then setup project's .env
+
     php artisan key:generate
+
 create database
+
     php artisan migrate
+
 starts the server
+
     php artisan serve
 ## About Laravel
 
